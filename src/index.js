@@ -64,6 +64,18 @@ app.patch('/users/:id', async (req, res) => {
     }
 });
 
+app.delete('/users/:id', async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        res.send(user);
+        if (!user) {
+            res.status(404).send();
+        }
+    } catch (e) {
+        res.status(500).send();
+    }
+});
+
 app.get('/tasks', async (req, res) => {
     try {
         const tasks = await Task.find({});
@@ -116,6 +128,18 @@ app.patch('/tasks/:id', async (req, res) => {
         if (!task) {
             res.status(404).send();
         }
+    } catch (e) {
+        res.status(500).send();
+    }
+});
+
+app.delete('/tasks/:id', async (req, res) => {
+    try {
+        const task = await Task.findByIdAndDelete(req.params.id);
+        if (!task) {
+            res.status(404).send();
+        }
+        res.send(task);
     } catch (e) {
         res.status(500).send();
     }
