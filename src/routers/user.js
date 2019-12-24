@@ -1,5 +1,5 @@
 const express = require('express');
-
+const auth = require('../middleware/auth');
 const router = new express.Router();
 const User = require('../models/user');
 
@@ -15,16 +15,17 @@ router.post('/users', async (req, res) => {
   }
 });
 
-router.get('/users', async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.send(users);
-    if (!users) {
-      res.status(404).send();
-    }
-  } catch (e) {
-    res.status(500).send();
-  }
+router.get('/users/me', auth, async (req, res) => {
+  // try {
+  //   const users = await User.find({});
+  //   res.send(users);
+  //   if (!users) {
+  //     res.status(404).send();
+  //   }
+  // } catch (e) {
+  //   res.status(500).send();
+  // }
+  res.send(req.user);
 });
 
 router.post('/users/signup', async (req, res) => {
